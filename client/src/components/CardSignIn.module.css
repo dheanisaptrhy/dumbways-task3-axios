@@ -1,0 +1,43 @@
+*{
+    font-family: "Avenir", Helvetica, sans-serif;
+}
+
+.miniContainer{
+    padding: 30px 30px 15px 30px;
+    background-color: white;
+    border-radius: 5px;
+}
+.signinH1{
+    font-weight: 700;
+    font-size: 36px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+.input{
+    border-color: 1px solid #BCBCBC;
+    background-color: rgba(210, 210, 210, 0.25);
+    margin-bottom: 15px;
+}
+.button{
+    margin: 15px 0;
+    width: 100%;
+    padding:8px 0;
+    border: none;
+    background-color: #D60000;
+}
+.button:hover{
+    background-color: #da2727;
+}
+.textKlik{
+    text-align: center;
+}
+.klikHere{
+    text-decoration: none;
+    font-weight: 700;
+    color: black;
+}
+.klikHere:hover{
+    text-decoration: none;
+    font-weight: 700;
+    color: #D60000;
+}

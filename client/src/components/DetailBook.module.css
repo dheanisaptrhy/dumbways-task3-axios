@@ -1,0 +1,36 @@
+.main{
+    margin: 50px 0 0 40px;
+}
+.colImage{
+    width: fit-content;
+}
+.imageBook{
+    min-width: 100%;
+}
+
+.divTitle{
+    margin-bottom: 20px;
+}
+.divTitleTitle, .textTitle{
+    font-weight: 700;
+    font-family: 'Times New Roman', Times, serif;
+}
+.divItemTitle{
+    font-weight: 700;
+}
+
+.divEditable{
+    color: #BCBCBC;
+    text-align: justify;
+}
+.button{
+    background-color: #D60000;
+    margin-left: 20px;
+    border: none;
+}
+.button:hover{
+    background-color: #da2727;
+}
+.btnIcon{
+    margin-left: 10px;
+}

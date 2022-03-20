@@ -1,0 +1,44 @@
+.main{
+    padding: 30px 20px 20px 20px;
+    border-radius: 5px;
+    background-color: rgba(255, 217, 217, 1);
+}
+
+.divLeft{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    /* max-height: 50px; */
+}
+.styleIcon{
+    width: 50px;
+    margin-right: 15px;
+    color: rgba(138, 140, 144, 1);
+}
+.divLeftDetail{
+    /* max-height: 40px; */
+}
+.divDetailUp{
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+.divDetailDown{
+    color: rgba(138, 140, 144, 1);
+    margin-bottom: 1px;
+}
+.divRight{
+    width: 230px;
+}
+.imageProfile{
+    width: 230px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+.button{
+    width: 100%;
+    border: none;
+    background-color: #D60000;
+}
+.button:hover{
+    background-color: #da2727;
+}

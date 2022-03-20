@@ -1,0 +1,57 @@
+*{
+    font-family: "Avenir", Helvetica, sans-serif;
+}
+
+.main{
+    width: 100%;
+    background-image: url('../mockup/vector1.png');
+    height: 100vh;
+    background-size: cover;  
+    background-color: #F2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content{
+    width: 50%;
+}
+
+.greetingContent{
+    width: 80%;
+    margin: 20px 0 55px 20px;
+}
+
+.contentP{
+    font-size: 24px;
+}
+.btn{
+    display: flex;
+    flex: row;
+}
+/* button */
+.btn .button{
+    border: none;
+    padding: 10px 55px;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 18px;
+}
+.btn .signup{
+    background-color: #D60000;
+    color: white;
+    margin-right: 20px;
+}
+
+.btn .signup:hover{
+    background-color: #da2727;
+    color: white;
+}
+
+.btn .signin{
+    background-color: hsla(0, 0%, 80%, 0.7);
+}
+.btn .signin:hover{
+    background-color: hsla(0, 0%, 80%, 0.979);
+
+}

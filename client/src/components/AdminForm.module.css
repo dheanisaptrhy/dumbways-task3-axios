@@ -1,0 +1,22 @@
+.main{
+    margin: 50px 120px;
+}
+
+.input{
+    margin-bottom: 20px;
+}
+.divButton{
+    display: flex;
+    justify-content: end;
+}
+.button{
+    background-color: #D60000;
+    border: none;
+}
+.button:hover{
+    background-color: #da2727;
+}
+.btnImg{
+    width: 20px;
+    margin-left: 10px;
+}
