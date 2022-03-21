@@ -2,8 +2,8 @@ import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Landing from './pages/Landing'
 import {BrowserRouter as Router, Route, Routes, Link} from 'react-router-dom'
-import CardSignIn from './components/CardSignIn';
-import CardSignUp from './components/CardSignUp';
+import CardSignIn from './components/auth/CardSignIn';
+import CardSignUp from './components/auth/CardSignUp';
 import Home from './pages/Home';
 import SubscribePage from './pages/SubscribePage';
 import ProfilePage from './pages/ProfilePage';
@@ -11,6 +11,11 @@ import DetailPage from './pages/DetailPage';
 import AdminBook from './pages/AdminBook';
 import AdminPage from './pages/AdminPage';
 
+import {API, setAuthToken} from './config/api'
+
+if(localStorage.token){
+  setAuthToken(localStorage.token)
+}
 
 function App() {
   return (

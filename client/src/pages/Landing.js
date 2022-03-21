@@ -2,8 +2,8 @@ import landingModule from '../styles/Landing.module.css'
 import logo from '../mockup/Icon.png'
 import { useNavigate } from 'react-router-dom'
 import { Container, Button, Modal } from "react-bootstrap";
-import CardSignIn from '../components/CardSignIn'
-import CardSignUp from '../components/CardSignUp'
+import CardSignIn from '../components/auth/CardSignIn'
+import CardSignUp from '../components/auth/CardSignUp'
 import { useState } from 'react';
 import Home from './Home';
 
