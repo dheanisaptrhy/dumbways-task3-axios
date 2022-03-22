@@ -6,7 +6,7 @@ const { uploadFile } = require('../middlewares/uploadFile')
 
 // import controller
 const { getUsers, deleteUser } = require('../controllers/user')
-const { register, login } = require('../controllers/auth')
+const { register, login, checkUser } = require('../controllers/auth')
 const { getBook, getDetailBook, addBook, editBook, deleteBook } = require('../controllers/book')
 const { addTransaction, editTransaction, getTransaction, getAllTransaction } = require('../controllers/transaction')
 
@@ -17,6 +17,7 @@ router.delete('/user/:id', deleteUser)
 //router authentication
 router.post('/register', register)
 router.post('/login', login)
+router.get('/check-user', auth, checkUser)
 
 //router book
 router.get('/books', getBook)

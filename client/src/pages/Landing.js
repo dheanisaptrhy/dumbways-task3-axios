@@ -4,10 +4,21 @@ import { useNavigate } from 'react-router-dom'
 import { Container, Button, Modal } from "react-bootstrap";
 import CardSignIn from '../components/auth/CardSignIn'
 import CardSignUp from '../components/auth/CardSignUp'
-import { useState } from 'react';
-import Home from './Home';
+import { useContext, useState } from 'react';
+import { UserContext } from '../context/userContext';
 
 function Landing() {
+    let navigate = useNavigate();
+
+    const [state] = useContext(UserContext);
+
+    const checkAuth = () =>{
+        if(state.isLogin === true){
+            navigate('/home')
+        }
+    }
+    checkAuth();
+
     const [show, setShow] = useState(false);
     const [show2, setShow2] = useState(false);
 
@@ -56,7 +67,6 @@ function Landing() {
 
                 </div>
             </div>
-            {/* )}          */}
         </>
 
     );

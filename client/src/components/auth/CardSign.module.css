@@ -7,7 +7,7 @@
     background-color: white;
     border-radius: 5px;
 }
-.signinH1{
+.signinH1, .signupH1{
     font-weight: 700;
     font-size: 36px;
     margin-top: 15px;

@@ -1,5 +1,5 @@
 import { Container, Form, Button } from 'react-bootstrap'
-import signInModule from './CardSignIn.module.css'
+import signInModule from './CardSign.module.css'
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
@@ -58,7 +58,7 @@ function CardSignIn() {
                     </Button>
                 </Form>
                 <div className={textKlik}>
-                    <p>Don't have account ? Klik <Link to='/signup' className={klikHere}>Here</Link></p>
+                    <p>Don't have account ? Klik <Link to='/signin' className={klikHere}>Here</Link></p>
                 </div>
             </div>
         </div>
