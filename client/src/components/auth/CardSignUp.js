@@ -1,11 +1,10 @@
 import React, { useContext, useState } from "react";
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button, Modal } from 'react-bootstrap'
 import signUpModule from './CardSign.module.css'
-import { Link } from 'react-router-dom'
 
 import { API } from '../../config/api'
 
-function CardSignUp( props ) {
+function CardSignUp({ show, handleClose, setSignIn }) {
     const { main,
         miniContainer,
         signupH1,
@@ -21,6 +20,10 @@ function CardSignUp( props ) {
         email: "",
         password: ""
     })
+
+    const handleSignIn = () =>{
+        setSignIn(true)
+    }
 
     const { fullname, email, password } = form;
 
@@ -54,42 +57,46 @@ function CardSignUp( props ) {
     }
 
     return (
-        <div className={main}>
-            <div className={miniContainer}>
-                <div>
-                    <h2 className={signupH1}>Sign Up</h2>
+        <Modal show={show} onHide={handleClose} centered>
+            <Modal.Body>
+                <div className={main}>
+                    <div className={miniContainer}>
+                        <div>
+                            <h2 className={signupH1}>Sign Up</h2>
+                        </div>
+                        <Form onSubmit={handleSubmit}>
+                            <Form.Control
+                                className={input}
+                                type="email"
+                                placeholder="Email"
+                                name="email"
+                                onChange={handleChange}
+                                value={email} />
+                            <Form.Control
+                                className={input}
+                                type="password"
+                                placeholder="Password"
+                                name="password"
+                                onChange={handleChange}
+                                value={password} />
+                            <Form.Control
+                                className={input}
+                                type="text"
+                                placeholder="Full Name"
+                                name="fullname"
+                                onChange={handleChange}
+                                value={fullname} />
+                            <Button className={button} type="submit">
+                                Sign Up
+                            </Button>
+                        </Form>
+                        <div className={textKlik}>
+                            <p>Already have an account ? Klik <Button variant="link" onClick={handleSignIn} className={klikHere}>Here</Button></p>
+                        </div>
+                    </div>
                 </div>
-                <Form onSubmit={handleSubmit}>
-                    <Form.Control
-                        className={input}
-                        type="email"
-                        placeholder="Email"
-                        name="email"
-                        onChange={handleChange}
-                        value={email} />
-                    <Form.Control
-                        className={input}
-                        type="password"
-                        placeholder="Password"
-                        name="password"
-                        onChange={handleChange}
-                        value={password} />
-                    <Form.Control
-                        className={input}
-                        type="text"
-                        placeholder="Full Name"
-                        name="fullname"
-                        onChange={handleChange}
-                        value={fullname} />
-                    <Button className={button} type="submit">
-                        Sign Up
-                    </Button>
-                </Form>
-                <div className={textKlik}>
-                    <p>Already have an account ? Klik <Link to='/signup' className={klikHere}>Here</Link></p>
-                </div>
-            </div>
-        </div>
+            </Modal.Body>
+        </Modal>
     );
 }
 export default CardSignUp;

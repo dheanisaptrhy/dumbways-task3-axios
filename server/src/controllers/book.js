@@ -2,13 +2,20 @@ const { book, user } = require('../../models')
 
 exports.getBook = async (req, res) => {
     try {
-        const data = await book.findAll({
-            
+        let data = await book.findAll({
             attributes: {
                 exclude: ['idUser','createdAt', 'updatedAt']
             }
         })
 
+        data = JSON.parse(JSON.stringify(data))
+
+        data = data.map((item)=>{
+            return {
+                ...item,
+                bookFile: process.env.PATH_FILE + item.bookFile
+            }
+        })
         res.send({
             status: 'Success',
             data

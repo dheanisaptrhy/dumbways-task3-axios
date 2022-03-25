@@ -1,4 +1,4 @@
-const { user } = require('../../models')
+const { user, profile, transaction } = require('../../models')
 
 exports.getUsers = async (req, res) => {
     try {
@@ -35,16 +35,60 @@ exports.deleteUser = async (req, res) => {
         })
 
         res.status(200).send({
-            status:'success',
-            data:{
+            status: 'success',
+            data: {
                 id
             }
         })
     } catch (error) {
         console.log(error);
         res.status(400).send({
-            status:'failed',
-            message:'server error'
+            status: 'failed',
+            message: 'server error'
         })
+    }
+}
+
+exports.getUserProf = async (req, res) => {
+    try {
+        const { id } = req.params
+        const data = await user.findOne({
+            where: {
+                id
+            },
+            include: [
+                {
+                    model: profile,
+                    as: "profile",
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt']
+                    }
+                },
+                {
+                    model: transaction,
+                    as: "transaction",
+                    attributes: {
+                        exclude: ['transferProof', 'accountNumber', 'createdAt', 'updatedAt']
+                    }
+                }
+            ],
+            attributes:{
+                exclude:['password', 'role', 'createdAt', 'updatedAt']
+            }
+        })
+        res.send({
+            status: 'success',
+            data: {
+                data
+            }
+        })
+
+    } catch (error) {
+        console.log(error);
+        res.send({
+            status: 'failed',
+            message: 'server error'
+        })
+
     }
 }

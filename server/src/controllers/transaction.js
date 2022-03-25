@@ -7,9 +7,9 @@ exports.addTransaction = async (req, res) => {
         const newTrans = await transaction.create({
             idUser: req.user.id,
             transferProof: req.file.filename,
-            remainingActive: 30,
-            userStatus: 'Active',
-            paymentStatus: 'Approved',
+            remainingActive: 0,
+            userStatus: 'Not Active',
+            paymentStatus: 'Pending',
             accountNumber: data.accountNumber
         })
 
@@ -51,8 +51,59 @@ exports.editTransaction = async (req, res) => {
     try {
         const { id } = req.params
 
-        const data = req.body
-        await transaction.update(data, {
+        const updateData = {
+            remainingActive:30,
+            userStatus:"Active",
+            paymentStatus:"Approved"
+        }
+        await transaction.update(updateData, {
+            where: {
+                id
+            }
+        })
+        const updated = await transaction.findOne({
+            where: {
+                id
+            },
+            include: {
+                model: user,
+                as: 'user',
+                attributes: {
+                    exclude: ['email', 'password', 'role', 'createdAt', 'updatedAt',]
+                }
+            },
+            attributes:{
+                exclude:['idUser', 'idBook', 'accountNumber', 'createdAt', 'updatedAt',]
+            }
+
+        })
+
+        res.status(200).send({
+            status: 'succes',
+            data: {
+                updated
+            }
+        })
+
+    } catch (error) {
+        console.log(error)
+        res.send({
+            status: 'failed',
+            message: 'Server Error'
+        })
+    }
+}
+
+exports.editTransCancelled = async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const updateData = {
+            remainingActive:0,
+            userStatus:"Not Active",
+            paymentStatus:"Cancel"
+        }
+        await transaction.update(updateData, {
             where: {
                 id
             }
@@ -150,6 +201,30 @@ exports.getAllTransaction = async (req, res) => {
         res.send({
             status: 'failed',
             message: 'Server Error'
+        })
+    }
+}
+
+exports.getTransUser = async (req, res) =>{
+    try {
+        const idUser = req.user.id
+        let data = await transaction.findOne({
+            where:{
+                idUser
+            },
+            attributes:{
+                exclude: ['createdAt', 'updatedAt', 'password']
+            }
+        })
+        data = JSON.parse(JSON.stringify(data))
+        data = data.map((item)=>{
+
+        })
+    } catch (error) {
+        console.log(error);
+        res.send({
+            status:'failed',
+            message:'server error'
         })
     }
 }

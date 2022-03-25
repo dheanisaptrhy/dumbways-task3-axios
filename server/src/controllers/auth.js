@@ -87,7 +87,7 @@ exports.login = async (req, res) => {
 
     const { error } = schema.validate(data)
     if (error) {
-        return res.status(400).send({
+        return res.status(200).send({
             error: {
                 message: error.details[0].message
             }
@@ -111,19 +111,16 @@ exports.login = async (req, res) => {
             })
         }
 
-        //token
-        const dataToken = {
-            id: userExist.id
-        }
-        const SECRET_KEY = process.env.TOKEN_KEY
-        const token = jwt.sign(dataToken, SECRET_KEY)
+        const token = jwt.sign({id:userExist.id},process.env.TOKEN_KEY)
 
         //status pengiriman
         res.status(200).send({
             status: 'success',
             data: {
+                id:userExist.id,
                 fullname: userExist.fullname,
                 email: userExist.email,
+                role: userExist.role,
                 token
             }
         })
@@ -162,7 +159,7 @@ exports.checkUser = async (req,res)=>{
                     id:dataUser.id,
                     fullname:dataUser.fullname,
                     email:dataUser.email,
-                    status:dataUser.status,
+                    role:dataUser.role,
                 }
             }
         })

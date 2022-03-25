@@ -31,9 +31,9 @@ function App() {
     if(!state.isLogin){
       navigate("/")
     }else{
-      if(state.user.status === "admin"){
+      if(state.user.role === "admin"){
         navigate("/adminHome")
-      }else{
+      }else if(state.user.role === "user"){
         navigate("/home")
       }
     }

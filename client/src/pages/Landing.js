@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { Container, Button, Modal } from "react-bootstrap";
 import CardSignIn from '../components/auth/CardSignIn'
 import CardSignUp from '../components/auth/CardSignUp'
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../context/userContext';
 
 function Landing() {
@@ -12,8 +12,8 @@ function Landing() {
 
     const [state] = useContext(UserContext);
 
-    const checkAuth = () =>{
-        if(state.isLogin === true){
+    const checkAuth = () => {
+        if (state.isLogin === true) {
             navigate('/home')
         }
     }
@@ -21,17 +21,32 @@ function Landing() {
 
     const [show, setShow] = useState(false);
     const [show2, setShow2] = useState(false);
+    const [SignIn, setSignIn] = useState(null)
+    const [SignUp, setSignUp] = useState(null)
 
+    //handle show modal
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
     const handleClose2 = () => setShow2(false);
     const handleShow2 = () => setShow2(true);
 
+    useEffect(()=>{
+        if(SignIn){
+            handleClose()
+            handleShow2()
+        }
+    },[SignIn])
+
+    useEffect(()=>{
+        if(SignUp){
+            handleClose2()
+            handleShow()
+        }
+    },[SignUp])
+
     return (
         <>
-            {/* {state.isLogin ? <Home/>: ( */}
-                <div className={landingModule.main}>
+            <div className={landingModule.main}>
                 <div>
                     <div className={landingModule.content}>
                         <div>
@@ -43,26 +58,21 @@ function Landing() {
                         </div>
 
                         <Container className={landingModule.btn}>
+                            {/* button Sign Up */}
                             <Button className={`${landingModule.button} ${landingModule.signup}`}
                                 onClick={handleShow}>
                                 Sign Up
                             </Button>
-                            <Modal show={show} onHide={handleClose} centered>
-                                <Modal.Body>
-                                    <CardSignUp />
-                                </Modal.Body>
-                            </Modal>
 
+                            {/* button Sign In */}
                             <Button className={`${landingModule.button} ${landingModule.signin}`}
                                 onClick={handleShow2}>
                                 Sign In
                             </Button>
-                            <Modal show={show2} onHide={handleClose2} centered>
-                                <Modal.Body>
-                                    <CardSignIn />
-                                </Modal.Body>
-                            </Modal>
                         </Container>
+                        <CardSignUp show={show} handleClose={handleClose} setSignIn={setSignIn}/>
+                        <CardSignIn show={show2} handleClose={handleClose2} setSignUp={setSignUp}/>
+                        
                     </div>
 
                 </div>

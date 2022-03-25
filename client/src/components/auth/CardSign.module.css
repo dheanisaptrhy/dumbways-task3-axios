@@ -32,7 +32,9 @@
     text-align: center;
 }
 .klikHere{
-    text-decoration: none;
+    border: none; 
+    background-color: transparent; 
+    padding: 0;
     font-weight: 700;
     color: black;
 }

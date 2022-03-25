@@ -20,6 +20,7 @@
     border: none;
     color: black;
     margin: 10px 0;
+    background-color: transparent;
 }
 .btnPop:hover{
     color: #4c4c4c;

@@ -1,9 +1,13 @@
-import { Container, Form, Button } from 'react-bootstrap'
+import { Container, Form, Button, Modal } from 'react-bootstrap'
 import signInModule from './CardSign.module.css'
-import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { UserContext } from '../../context/userContext'
+import { Navigate, useNavigate } from 'react-router-dom'
 
-function CardSignIn() {
+import { API } from '../../config/api'
+
+function CardSignIn({ show, handleClose, setSignUp }) {
+    const navigate = useNavigate();
     const {
         main,
         miniContainer,
@@ -13,55 +17,94 @@ function CardSignIn() {
         klikHere,
         textKlik,
     } = signInModule
+    const [state, dispatch] = useContext(UserContext)
 
-    // const [state, setState] = useState({
-    //     isLogin: false,
-    //     user: {
-    //         email: '',
-    //         password: ''
-    //     }
-    // })
+    const [message, setMessage] = useState(null)
+    const [form, setForm] = useState({
+        email: "",
+        password: ""
+    })
 
-    // useEffect(() => {
+    const { email, password } = form
 
-    // })
-    // useEffect(() => {
-    //     if (state.user.email) {
-    //     }
-    // }, [state])
+    const handleChange = (e) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value
+        })
+    }
 
-    // const handleOnSubmit = (e) => {
-    //     e.preventDefault()
-    //     const email = document.getElementById('email').value
-    //     const password = document.getElementById('password').value
-    //     setState({
-    //         isLogin: true,
-    //         user: {
-    //             email,
-    //             password
-    //         }
-    //     })
-    // }
+    const handleSignUp = () => {
+        setSignUp(true)
+    }
+
+    const handleOnSubmit = async (e) => {
+        try {
+            e.preventDefault();
+            const config = {
+                headers: {
+                    "Content-type": "application/json"
+                }
+            }
+            const body = JSON.stringify(form)
+            const response = await API.post('/login', body, config)
+            console.log(response);
+
+            //ngecek proses
+            if (response?.status == 200) {
+                dispatch({
+                    type: "LOGIN_SUCCESS",
+                    payload: response.data.data
+                })
+
+                //cek status user
+                if (response.data.data.role === "admin") {
+                    navigate('/adminHome')
+                } else {
+                    navigate('/home')
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
-        <div className={main}>
-            <div className={miniContainer}>
-                <div>
-                    <h2 className={signinH1}>Sign In</h2>
+        <Modal show={show} onHide={handleClose} centered>
+            <Modal.Body>
+                <div className={main}>
+                    <div className={miniContainer}>
+                        <div>
+                            <h2 className={signinH1}>Sign In</h2>
+                        </div>
+                        {message && message}
+                        <Form onSubmit={handleOnSubmit}>
+                            {/* <Form> */}
+                            <Form.Control
+                                className={input}
+                                type="email"
+                                placeholder="Email"
+                                name="email"
+                                onChange={handleChange}
+                                value={email} />
+                            <Form.Control
+                                className={input}
+                                type="password"
+                                placeholder="Password"
+                                name="password"
+                                onChange={handleChange}
+                                value={password} />
+                            <Button className={button} type="submit">
+                                Sign In
+                            </Button>
+                        </Form>
+                        <div className={textKlik}>
+                            <p>Don't have account ? Klik <Button variant="link" onClick={handleSignUp} className={klikHere}>Here</Button></p>
+                        </div>
+                    </div>
                 </div>
-                {/* <Form onSubmit={handleOnSubmit}> */}
-                <Form>
-                    <Form.Control className={input} type="email" placeholder="Email" id='email' name='email' />
-                    <Form.Control className={input} type="password" placeholder="Password" id='password' name='password' />
-                    <Button className={button} type="submit">
-                        Sign In
-                    </Button>
-                </Form>
-                <div className={textKlik}>
-                    <p>Don't have account ? Klik <Link to='/signin' className={klikHere}>Here</Link></p>
-                </div>
-            </div>
-        </div>
+            </Modal.Body>
+        </Modal>
     );
 }
 export default CardSignIn;
