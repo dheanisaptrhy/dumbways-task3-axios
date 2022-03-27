@@ -68,7 +68,7 @@ exports.getUserProf = async (req, res) => {
                     model: transaction,
                     as: "transaction",
                     attributes: {
-                        exclude: ['transferProof', 'accountNumber', 'createdAt', 'updatedAt']
+                        exclude: ['transferProof', 'accountNumber', 'createdAt', 'updatedAt','idBook']
                     }
                 }
             ],
@@ -78,9 +78,7 @@ exports.getUserProf = async (req, res) => {
         })
         res.send({
             status: 'success',
-            data: {
-                data
-            }
+            data
         })
 
     } catch (error) {

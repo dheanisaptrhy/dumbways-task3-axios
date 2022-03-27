@@ -1,71 +1,27 @@
 const { book, user } = require('../../models')
 
-exports.getBook = async (req, res) => {
-    try {
-        let data = await book.findAll({
-            attributes: {
-                exclude: ['idUser','createdAt', 'updatedAt']
-            }
-        })
-
-        data = JSON.parse(JSON.stringify(data))
-
-        data = data.map((item)=>{
-            return {
-                ...item,
-                bookFile: process.env.PATH_FILE + item.bookFile
-            }
-        })
-        res.send({
-            status: 'Success',
-            data
-        })
-
-    } catch (error) {
-        console.log(error);
-        res.status(400).send({
-            status: 'failed',
-            message: 'Server error'
-        })
-    }
-}
-
-exports.getDetailBook = async (req, res) => {
-    try {
-        const { id } = req.params
-        const detail = await book.findOne({
-            where: {
-                id
-            },
-            attributes: {
-                exclude: ['idUser','createdAt', 'updatedAt']
-            }
-        })
-
-        res.send({
-            status: 'Success',
-            data: {
-                detail
-            }
-        })
-    } catch (error) {
-        console.log(error);
-        res.status(400).send({
-            status: 'failed',
-            message: 'Server error'
-        })
-    }
-}
-
+//add book
 exports.addBook = async (req, res) => {
     try {
-        const {...data} = req.body
+        const { ...data } = req.body
+        const image = req.files
+        console.log(image.length);
+        let images = []
+        for (let i = 0; i < image.length; i++) {
+            let file = image[i].filename
+            console.log(file);
+            images.push(file)
+            console.log(images);
+        }
+        images.join(',')
+        let imageString = images.toString()
+        console.log(images);
         const createBook = await book.create({
             ...data,
-            bookFile: req.file.filename,
+            bookFile: imageString,
             idUser: req.user.id
         })
-
+        
         res.status(201).send({
             status: 'success',
             data: {
@@ -82,6 +38,7 @@ exports.addBook = async (req, res) => {
     }
 }
 
+//edit book
 exports.editBook = async (req, res) => {
     try {
         const { id } = req.params
@@ -94,11 +51,11 @@ exports.editBook = async (req, res) => {
         })
 
         const updated = await book.findOne({
-            where:{
+            where: {
                 id
-            }, 
+            },
             attributes: {
-                exclude: ['idUser','createdAt', 'updatedAt']
+                exclude: ['idUser', 'createdAt', 'updatedAt']
             }
         })
 
@@ -117,17 +74,18 @@ exports.editBook = async (req, res) => {
     }
 }
 
-exports.deleteBook = async (req,res)=>{
+//delete book
+exports.deleteBook = async (req, res) => {
     try {
-        const {id} = req.params
+        const { id } = req.params
         await book.destroy({
-            where:{
+            where: {
                 id
             }
         })
         res.status(200).send({
-            status:'success',
-            data:{
+            status: 'success',
+            data: {
                 id
             }
         })
@@ -136,6 +94,109 @@ exports.deleteBook = async (req,res)=>{
         res.send({
             status: 'failed',
             message: 'Server Error'
+        })
+    }
+}
+
+//get semua buku
+exports.getBook = async (req, res) => {
+    try {
+        let data = await book.findAll({
+            attributes: {
+                exclude: ['idUser', 'createdAt', 'updatedAt']
+            }
+        })
+
+        data = JSON.parse(JSON.stringify(data))
+        console.log(data);
+
+        data = data.map((item) => {
+            item.bookFile = item.bookFile.split(',')
+            return {
+                ...item,
+                bookFile: process.env.PATH_FILE + item.bookFile[0]
+            }
+        })
+        res.send({
+            status: 'Success',
+            data
+        })
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({
+            status: 'failed',
+            message: 'Server error'
+        })
+    }
+}
+
+//get detail book
+exports.getDetailBook = async (req, res) => {
+    try {
+        const { id } = req.params
+        let detail = await book.findOne({
+            where: {
+                id
+            },
+            attributes: {
+                exclude: ['idUser', 'createdAt', 'updatedAt']
+            }
+        })
+        detail = JSON.parse(JSON.stringify(detail));
+        detail.bookFile = detail.bookFile.split(',')
+
+        detail = {
+            ...detail,
+            bookFile: process.env.PATH_FILE + detail.bookFile[0]
+        }
+
+        res.send({
+            status: 'Success',
+            data: {
+                detail
+            }
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({
+            status: 'failed',
+            message: 'Server error'
+        })
+    }
+}
+
+//baca epub
+exports.readBook = async (req, res) => {
+    try {
+        const { id } = req.params
+        let detail = await book.findOne({
+            where: {
+                id
+            },
+            attributes: {
+                exclude: ['idUser', 'createdAt', 'updatedAt']
+            }
+        })
+        detail = JSON.parse(JSON.stringify(detail));
+        detail.bookFile = detail.bookFile.split(',')
+
+        detail = {
+            ...detail,
+            bookFile: process.env.PATH_FILE + detail.bookFile[1]
+        }
+
+        res.send({
+            status: 'Success',
+            data: {
+                detail
+            }
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(400).send({
+            status: 'failed',
+            message: 'Server error'
         })
     }
 }

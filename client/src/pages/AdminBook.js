@@ -15,15 +15,16 @@ export default function AdminBook() {
     pages: "",
     author: "",
     isbn: "",
-    about:"",
+    about: "",
     bookFile: ""
   })
 
   //function for handle on change
   const handleChange = (e) => {
+    console.log(e);
     setForm({
       ...form,
-      [e.target.name]: e.target.type === "file" ? e.target.files : e.target.value
+      [e.target.name]: e.target.type === "files" ? e.target.files : e.target.value
     })
     //image url preview
     if (e.target.type === "file") {
@@ -50,10 +51,12 @@ export default function AdminBook() {
       formData.set("author", form.author)
       formData.set("isbn", form.isbn)
       formData.set("about", form.about)
-      formData.set("bookFile", form.bookFile[0], form.bookFile[0].name)
-
+      for(let i=0 ; i< form.bookFile.length; i++){
+        formData.append("bookFile",form.bookFile[i][0], form.bookFile[i][0].name)
+      }
+      
       const response = await API.post('/book', formData, config)
-      console.log(response);
+      console.log(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -105,8 +108,8 @@ export default function AdminBook() {
             type="file"
             placeholder="Attache Book File"
             name="bookFile"
-            onChange={handleChange} 
-            multiple/>
+            onChange={handleChange}
+            multiple />
           {preview && (
             <div>
               <img

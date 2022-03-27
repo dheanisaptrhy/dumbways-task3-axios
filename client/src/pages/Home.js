@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Container, Row, Col, Card, Modal } from 'react-bootstrap';
+import { Container, Row, Col, Card, Modal, Button } from 'react-bootstrap';
 import Navbar from '../components/Navbar';
 import MainPage from '../components/MainPage';
 import homeCss from '../styles/Home.module.css'
@@ -15,6 +15,7 @@ function Home() {
   let navigate = useNavigate();
   const [state] = useContext(UserContext);
   const [books, setBook] = useState([])
+  const [profile, setProfile] = useState([])
 
   //handle show modal
   const [show, setShow] = useState([])
@@ -33,16 +34,30 @@ function Home() {
   const getBooks = async () => {
     try {
       const response = await API.get('/books')
+
       setBook(response.data.data)
+
     } catch (error) {
       console.log(error)
+    }
+  }
+  const getUserNav = async (id) => {
+    try {
+      const response = await API.get(`/user/${id}`)
+      setProfile(response.data.data)
+
+    } catch (error) {
+      console.log(error);
     }
   }
 
   //didMount 
   useEffect(() => {
+    getUserNav(state.user.id)
     getBooks()
   }, [])
+
+
 
   // alert belum subscribe
   const alert = (
@@ -58,7 +73,7 @@ function Home() {
       {/* Navbar */}
       <Row>
         <Col xs={2}>
-          <Navbar />
+          <Navbar subscribe={profile} />
         </Col>
 
         {/* Main */}
@@ -67,25 +82,45 @@ function Home() {
           <Row>
             {books?.map((data, index) => (
               <Col style={{ maxHeight: '29rem' }}>
-                <Link to='/detailBook' style={{ textDecoration: 'none', color: 'black' }}>
-                  <Card style={{ width: '100%', maxHeight: '29rem', border: 'none' }}>
+
+                <Card style={{ width: '100%', maxHeight: '10rem', border: 'none' }}>
+                  
+                  <Button
+                    onClick={() => navigate(`/book/${data.id}`)}
+                    style={{
+                      border: 'none',
+                      backgroundColor: 'transparent',
+                      padding: '0', margin: '0'
+                    }}>
+
                     <Card.Img variant="top" src={data.bookFile} style={{ maxWidth: '15rem' }} />
-                    <Card.Body>
+                    
+                    <Card.Body
+                      style={{
+                        padding: '0',
+                        marginTop:'20px',
+                        marginBottom:'20px',
+                        textAlign: 'left',
+                        margin: '0',
+                        color: 'black',
+                      }}>
+                        
                       <Card.Title
                         style={{
                           fontFamily: 'Times New Roman',
                           fontWeight: '700',
                           textOverflow: 'ellipsis',
                           overflow: 'hidden',
-                          maxHeight: '50px'
+                          maxHeight: '50px',
                         }}>
                         {data.title}
                       </Card.Title>
+
                       <Card.Text
-                        style={{ color: 'darkgrey' }}>{data.author}</Card.Text>
+                        style={{ color: 'darkgrey', fontSize: '14px' }}>{data.author}</Card.Text>
                     </Card.Body>
-                  </Card>
-                </Link>
+                  </Button>
+                </Card>
               </Col>
             ))}
           </Row>

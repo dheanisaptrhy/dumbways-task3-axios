@@ -14,6 +14,7 @@ import AdminPage from './pages/AdminPage';
 
 import {API, setAuthToken} from './config/api'
 import { UserContext } from './context/userContext';
+import ReadBook from './pages/ReadBook';
 
 if(localStorage.token){
   setAuthToken(localStorage.token)
@@ -77,9 +78,10 @@ function App() {
         <Route exact path="/home" element={<Home/>}/>
         <Route exact path="/subscribe" element={<SubscribePage/>}/>
         <Route exact path="/profile" element={<ProfilePage/>}/>
-        <Route exact path="/detailBook" element={<DetailPage/>}/>
+        <Route exact path="/book/:id" element={<DetailPage/>}/>
         <Route exact path="/adminHome" element={<AdminPage/>}/>
         <Route exact path="/adminAdd" element={<AdminBook/>}/>
+        <Route exact path="/readBook/:id" element={<ReadBook/>}/>
       </Routes>
     </>
   );
